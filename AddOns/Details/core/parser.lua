@@ -303,72 +303,52 @@
 	--spellIds override
 	local override_spellId = {}
 
-	if (isWOTLK) then
+	if (isCATA or isPANDA) then
 		override_spellId = {
 			--Scourge Strike
-			[55090] = 55271,
-			[55265] = 55271,
-			[55270] = 55271,
-			[70890] = 55271, --shadow
+			[55265] = 55090,
+			[55270] = 55090,
+			[70890] = 55090, --shadow
 
 			--Frost Strike
-			[49143] = 55268,
-			[51416] = 55268,
-			[51417] = 55268,
-			[51418] = 55268,
-			[51419] = 55268,
-			[66962] = 55268, --offhand
+			[51416] = 49143,
+			[51417] = 49143,
+			[51418] = 49143,
+			[51419] = 49143,
+			[66962] = 49143, --offhand
+			[66196] = 49143, --frost dk frost strike offhand
 
 			--Obliterate
-			[49020] = 51425,
-			[51423] = 51425,
-			[51424] = 51425,
-			[66974] = 51425, --offhand
+			[51423] = 49020,
+			[51424] = 49020,
+			[66974] = 49020, --offhand
+			[66198] = 49020, --frost dk obliterate offhand
 
 			--Death Strike
-			[49998] = 49924,
-			[49999] = 49924,
-			[45463] = 49924,
-			[49923] = 49924,
-			[66953] = 49924, --offhand
+			[49999] = 49998,
+			[45463] = 49998,
+			[49923] = 49998,
+			[66953] = 49998, --offhand
 
 			--Blood Strike
-			[45902] = 49930,
-			[49926] = 49930,
-			[49927] = 49930,
-			[49928] = 49930,
-			[49929] = 49930,
-			[66979] = 49930, --offhand
+			[49926] = 45902,
+			[49927] = 45902,
+			[49928] = 45902,
+			[49929] = 45902,
+			[66979] = 45902, --offhand
 
 			--Rune Strike
 			[6621] = 56815, --offhand
 
 			--Plague Strike
-			[45462] = 49921,
-			[49917] = 49921,
-			[49918] = 49921,
-			[49919] = 49921,
-			[49920] = 49921,
-			[66992] = 49921, --offhand
+			[49917] = 45462,
+			[49918] = 45462,
+			[49919] = 45462,
+			[49920] = 45462,
+			[66992] = 45462, --offhand
 
 			--Seal of Command
 			[20424] = 69403, --53739 and 53733
-
-			--odyn's fury warrior
-			[385062] = 385060,
-			[385061] = 385060,
-
-			--crushing blow
-			[335098] = 335097,
-			[335100] = 335097,
-
-			--charge warrior
-			[105771] = 126664,
-
-			--elemental stances
-			[377458] = 377459,
-			[377461] = 377459,
-			[382133] = 377459,
 		}
 
 	else --retail
@@ -674,18 +654,18 @@
 		end
 		Details.LastPullMsg = time()
 
-		local hitLine = self.HitBy or Loc["|cFFFFBB00First Hit|r: *?*"]
+		local hitLine = self.HitBy or "|cFFFFBB00First Hit|r: *?*"
 		local targetLine = ""
 
 		if (Details.bossTargetAtPull) then
-			targetLine = Loc[" |cFFFFBB00Boss First Target|r: "] .. Details.bossTargetAtPull
+			targetLine = " |cFFFFBB00Boss First Target|r: " .. Details.bossTargetAtPull
 		else
 			for i = 1, 5 do
 				local boss = UnitExists("boss" .. i)
 				if (boss) then
 					local target = UnitName ("boss" .. i .. "target")
 					if (target and type(target) == "string") then
-						targetLine = Loc[" |cFFFFBB00Boss First Target|r: "] .. target
+						targetLine = " |cFFFFBB00Boss First Target|r: " .. target
 						break
 					end
 				end
@@ -747,11 +727,11 @@
 			end
 
 			if (value and combatTime and value > 0 and combatTime > 0) then
-				Details:Msg(Loc["|cFFFFBB00Your Best Score|r:"], Details:ToK2 ((value) / combatTime) .. Loc[" [|cFFFFFF00Guild Rank: "] .. rank .. "|r]") --localize-me
+				Details:Msg("|cFFFFBB00Your Best Score|r:", Details:ToK2 ((value) / combatTime) .. " [|cFFFFFF00Guild Rank: " .. rank .. "|r]") --localize-me
 			end
 
 			if ((not combatTime or combatTime == 0) and not Details.SyncWarning) then
-				Details:Msg(Loc["|cFFFF3300you may need sync the rank within the guild, type '|cFFFFFF00/details rank|r'|r"]) --localize-me
+				Details:Msg("|cFFFF3300you may need sync the rank within the guild, type '|cFFFFFF00/details rank|r'|r") --localize-me
 				Details.SyncWarning = true
 			end
 		end
@@ -858,7 +838,8 @@
 			local npcId = npcid_cache[targetSerial] --target npc
 			if (not npcId) then
 				--this string manipulation is running on every event
-				npcId = tonumber(select(6, strsplit("-", targetSerial)) or 0)
+				--npcId = tonumber(select(6, strsplit("-", targetSerial)) or 0)
+				npcId = tonumber(targetSerial:match("^[^%-]*%-[^%-]*%-[^%-]*%-[^%-]*%-[^%-]*%-([^%-]*)"))
 				npcid_cache[targetSerial] = npcId
 			end
 
@@ -960,7 +941,7 @@
 					end
 
 					Details.WhoAggroTimer = C_Timer.NewTimer(0.1, whoAggro)
-					Details.WhoAggroTimer.HitBy = "|cFFFFFF00開怪|r: " .. (link or "") .. " 由 " .. (sourceName or "未知") -- 不能用外部翻譯
+					Details.WhoAggroTimer.HitBy = "|cFFFFFF00First Hit|r: " .. (link or "") .. " from " .. (sourceName or "Unknown")
 
 					if (Details.announce_firsthit.enabled) then
 						Details:Msg("", Details.WhoAggroTimer.HitBy)
@@ -1636,6 +1617,8 @@
 		end
 
 		--actor owner (if any)
+		targetRaidFlags = bitBand(targetRaidFlags, COMBATLOG_OBJECT_RAIDTARGET_MASK)
+
 		if (ownerActor) then --se for dano de um Pet
 			ownerActor.total = ownerActor.total + amount --e adiciona o dano ao pet
 
@@ -1824,7 +1807,7 @@
 		local this_event = t[i]
 
 		if (not this_event) then
-			return Details:Msg(Loc["Parser Event Error -> Set to 16 DeathLogs and /reload"], i, _amount_of_last_events)
+			return Details:Msg("Parser Event Error -> Set to 16 DeathLogs and /reload", i, _amount_of_last_events)
 		end
 
 		this_event [1] = true --true if this is a damage || false for healing
@@ -1919,7 +1902,7 @@
 		local this_event = t [i]
 
 		if (not this_event) then
-			return Details:Msg(Loc["Parser Event Error -> Set to 16 DeathLogs and /reload"], i, _amount_of_last_events)
+			return Details:Msg("Parser Event Error -> Set to 16 DeathLogs and /reload", i, _amount_of_last_events)
 		end
 
 		this_event [1] = true --true if this is a damage || false for healing
@@ -2039,7 +2022,7 @@
 		local this_event = t [i]
 
 		if (not this_event) then
-			return Details:Msg(Loc["Parser Event Error -> Set to 16 DeathLogs and /reload"], i, _amount_of_last_events)
+			return Details:Msg("Parser Event Error -> Set to 16 DeathLogs and /reload", i, _amount_of_last_events)
 		end
 
 		this_event [1] = true --true if this is a damage || false for healing
@@ -2406,7 +2389,7 @@
 
 		--no name, use spellname
 		if (not sourceName) then
-			sourceName = "[*] " .. (spellNameHeal or Loc["--unknown spell--"])
+			sourceName = "[*] " .. (spellNameHeal or "--unknown spell--")
 		end
 
 		--no target, just ignore
@@ -2904,7 +2887,7 @@
 
 		--not yet well know about unnamed buff casters
 		if (not targetName) then
-			targetName = Loc["[*] Unknown shield target"]
+			targetName = "[*] Unknown shield target"
 
 		elseif (not sourceName) then
 			sourceName = names_cache[spellName]
@@ -2975,7 +2958,7 @@
 				local thisEvent = deathLog[i]
 
 				if (not thisEvent) then
-					return Details:Msg(Loc["Parser Event Error -> Set to 16 DeathLogs and /reload"], i, _amount_of_last_events)
+					return Details:Msg("Parser Event Error -> Set to 16 DeathLogs and /reload", i, _amount_of_last_events)
 				end
 
 				thisEvent[1] = 5 --5 = buff aplication
@@ -3488,7 +3471,7 @@
 					local thisEvent = t[i]
 
 					if (not thisEvent) then
-						return Details:Msg(Loc["Parser Event Error -> Set to 16 DeathLogs and /reload"], i, _amount_of_last_events)
+						return Details:Msg("Parser Event Error -> Set to 16 DeathLogs and /reload", i, _amount_of_last_events)
 					end
 
 					thisEvent[1] = 4 --4 = debuff aplication
@@ -4545,7 +4528,7 @@ local SPELL_POWER_PAIN = SPELL_POWER_PAIN or (PowerEnum and PowerEnum.Pain) or 1
 		end
 
 		if (not spellName) then
-			spellName = Loc["Melee"]
+			spellName = "Melee"
 		end
 
 		if (not sourceName) then
@@ -4664,7 +4647,7 @@ local SPELL_POWER_PAIN = SPELL_POWER_PAIN or (PowerEnum and PowerEnum.Pain) or 1
 
 				local bIsMythicRun = false
 				--check if this is a mythic+ run for overall deaths
-				local mythicLevel = C_ChallengeMode and C_ChallengeMode.GetActiveKeystoneInfo() --classic wow doesn't not have C_ChallengeMode API
+				local mythicLevel = C_ChallengeMode and C_ChallengeMode.GetActiveKeystoneInfo and C_ChallengeMode.GetActiveKeystoneInfo() --classic wow doesn't not have C_ChallengeMode API
 				if (mythicLevel and type(mythicLevel) == "number" and mythicLevel >= 2) then --several checks to be future proof
 					bIsMythicRun = true
 				end
@@ -4871,7 +4854,7 @@ local SPELL_POWER_PAIN = SPELL_POWER_PAIN or (PowerEnum and PowerEnum.Pain) or 1
 						thisPlayer.nome, --string player name
 						thisPlayer.classe, --string player class
 						maxHealth, --number max health
-						minutes .. Loc["m "] .. seconds .. Loc["s"], --time of death as string
+						minutes .. "m " .. seconds .. "s", --time of death as string
 						["dead"] = true,
 						["last_cooldown"] = thisPlayer.last_cooldown,
 						["dead_at"] = combatElapsedTime,
@@ -4894,7 +4877,7 @@ local SPELL_POWER_PAIN = SPELL_POWER_PAIN or (PowerEnum and PowerEnum.Pain) or 1
 						local mythicPlusElapsedTime = GetTime() - Details.tabela_overall:GetStartTime()
 						local minutes, seconds = floor(mythicPlusElapsedTime/60), floor(mythicPlusElapsedTime % 60)
 
-						overallDeathTable[6] = minutes .. Loc["m "] .. seconds .. Loc["s"]
+						overallDeathTable[6] = minutes .. "m " .. seconds .. "s"
 						overallDeathTable.dead_at = mythicPlusElapsedTime
 
 						--save data about the mythic run in the deathTable which goes in the regular segment
@@ -5266,7 +5249,7 @@ local SPELL_POWER_PAIN = SPELL_POWER_PAIN or (PowerEnum and PowerEnum.Pain) or 1
 	end
 
 	function Details:CallWipe (from_slash)
-		Details:Msg(Loc["Wipe has been called by your raid leader."])
+		Details:Msg("Wipe has been called by your raid leader.")
 
 		if (Details.wipe_called) then
 			if (from_slash) then
@@ -5609,6 +5592,12 @@ local SPELL_POWER_PAIN = SPELL_POWER_PAIN or (PowerEnum and PowerEnum.Pain) or 1
 		Details:SendEvent("COMBAT_ENCOUNTER_START", nil, ...)
 
 		Details222.CacheKeystoneForAllGroupMembers()
+	end
+
+	---@param self details
+	---@return details_encounter_table
+	function Details:GetCurrentEncounterInfo()
+		return Details.encounter_table
 	end
 
 	--ENCOUNRTER_END
@@ -6006,7 +5995,7 @@ local SPELL_POWER_PAIN = SPELL_POWER_PAIN or (PowerEnum and PowerEnum.Pain) or 1
 			if (not Details.logoff_saving_data) then
 				local successful, errortext = pcall(Details.Database.StoreWipe)
 				if (not successful) then
-					Details:Msg(Loc["error occurred on Details.Database.StoreWipe():"], errortext)
+					Details:Msg("error occurred on Details.Database.StoreWipe():", errortext)
 				end
 			end
 			Details.schedule_store_boss_encounter_wipe = nil
@@ -6057,7 +6046,7 @@ local SPELL_POWER_PAIN = SPELL_POWER_PAIN or (PowerEnum and PowerEnum.Pain) or 1
 			Details222.MythicPlus.RUN_START_AT = time()
 			Details222.MythicPlus.WorldStateTimerEndAt = nil
 
-			local activeKeystoneLevel, activeAffixIDs, wasActiveKeystoneCharged = C_ChallengeMode.GetActiveKeystoneInfo()
+			local activeKeystoneLevel, activeAffixIDs, wasActiveKeystoneCharged = C_ChallengeMode.GetActiveKeystoneInfo and C_ChallengeMode.GetActiveKeystoneInfo()
 			Details222.MythicPlus.Level = activeKeystoneLevel or 2
 
 			Details:SendEvent("COMBAT_MYTHICDUNGEON_START")
@@ -6087,7 +6076,7 @@ local SPELL_POWER_PAIN = SPELL_POWER_PAIN or (PowerEnum and PowerEnum.Pain) or 1
 			Details222.MythicPlus.WorldStateTimerEndAt = nil
 			Details222.MythicPlus.LogStep("Event: CHALLENGE_MODE_START")
 
-			local activeKeystoneLevel, activeAffixIDs, wasActiveKeystoneCharged = C_ChallengeMode.GetActiveKeystoneInfo()
+			local activeKeystoneLevel, activeAffixIDs, wasActiveKeystoneCharged = C_ChallengeMode.GetActiveKeystoneInfo and C_ChallengeMode.GetActiveKeystoneInfo()
 			Details222.MythicPlus.Level = activeKeystoneLevel or 2
 
 			Details.challengeModeMapId = C_ChallengeMode.GetActiveChallengeMapID()
@@ -6211,7 +6200,7 @@ local SPELL_POWER_PAIN = SPELL_POWER_PAIN or (PowerEnum and PowerEnum.Pain) or 1
 
 		if (completionTime) then
             --Subtract death time from time of run to get the true time
-            local deaths = C_ChallengeMode.GetDeathCount()
+            local deaths = C_ChallengeMode.GetDeathCount and C_ChallengeMode.GetDeathCount()
             if deaths and deaths > 0 then
                 local secondsPerDeath = 5
                 if level >= 7 then
@@ -6537,7 +6526,7 @@ local SPELL_POWER_PAIN = SPELL_POWER_PAIN or (PowerEnum and PowerEnum.Pain) or 1
 			if (not Details.instance_load_failed) then
 				Details:CreatePanicWarning()
 			end
-			Details.instance_load_failed.text:SetText(Loc["Framework for Details! isn't loaded.\nIf you just updated the addon, please reboot the game client.\nWe apologize for the inconvenience and thank you for your comprehension."])
+			Details.instance_load_failed.text:SetText("Framework for Details! isn't loaded.\nIf you just updated the addon, please reboot the game client.\nWe apologize for the inconvenience and thank you for your comprehension.")
 			return
 		end
 
@@ -6783,7 +6772,7 @@ local SPELL_POWER_PAIN = SPELL_POWER_PAIN or (PowerEnum and PowerEnum.Pain) or 1
 
 		--if is in combat during the logout, stop the combat
 		if (Details.in_combat and Details.tabela_vigente) then
-			tinsert(_detalhes_global.exit_log, Loc["3 - Leaving current combat."])
+			tinsert(_detalhes_global.exit_log, "3 - Leaving current combat.")
 			currentStep = "Leaving Current Combat"
 			xpcall(Details.SairDoCombate, logSaverError)
 			Details.can_panic_mode = true
@@ -6791,14 +6780,14 @@ local SPELL_POWER_PAIN = SPELL_POWER_PAIN or (PowerEnum and PowerEnum.Pain) or 1
 
 		--switch back to default, settings changed by automation
 		if (Details.CheckSwitchOnLogon and Details.tabela_instancias and Details.tabela_instancias[1] and getmetatable(Details.tabela_instancias[1])) then
-			tinsert(_detalhes_global.exit_log, Loc["4 - Reversing switches."])
+			tinsert(_detalhes_global.exit_log, "4 - Reversing switches.")
 			currentStep = "Check Switch on Logon"
 			xpcall(Details.CheckSwitchOnLogon, logSaverError)
 		end
 
 		--user requested a wipe of the full configuration
 		if (Details.wipe_full_config) then
-			tinsert(_detalhes_global.exit_log, Loc["5 - Is a full config wipe."])
+			tinsert(_detalhes_global.exit_log, "5 - Is a full config wipe.")
 			addToExitErrors("true: _detalhes.wipe_full_config | " .. Details.GetVersionString())
 			_detalhes_global = nil
 			_detalhes_database = nil
@@ -6806,16 +6795,16 @@ local SPELL_POWER_PAIN = SPELL_POWER_PAIN or (PowerEnum and PowerEnum.Pain) or 1
 		end
 
 		--save the config
-		tinsert(_detalhes_global.exit_log, Loc["6 - Saving Config."])
+		tinsert(_detalhes_global.exit_log, "6 - Saving Config.")
 		currentStep = "Saving Config"
 		xpcall(Details.SaveConfig, logSaverError)
 
-		tinsert(_detalhes_global.exit_log, Loc["7 - Saving Profiles."])
+		tinsert(_detalhes_global.exit_log, "7 - Saving Profiles.")
 		currentStep = "Saving Profile"
 		xpcall(Details.SaveProfile, logSaverError)
 
 		--save the nicktag cache
-		tinsert(_detalhes_global.exit_log, Loc["8 - Saving nicktag cache."])
+		tinsert(_detalhes_global.exit_log, "8 - Saving nicktag cache.")
 
 		local saveNicktabCache = function()
 			_detalhes_database.nick_tag_cache = Details.CopyTable(_detalhes_database.nick_tag_cache)
@@ -7577,7 +7566,7 @@ local SPELL_POWER_PAIN = SPELL_POWER_PAIN or (PowerEnum and PowerEnum.Pain) or 1
 				actor.total = damageDone
 				actor.classe = classToken or "UNKNOW"
 
-			elseif (name ~= Loc["Unknown"] and type(name) == "string" and string.len(name) > 1) then
+			elseif (name ~= "Unknown" and type(name) == "string" and string.len(name) > 1) then
 				local guid = UnitGUID(Details:Ambiguate(name))
 				if (guid) then
 					local flag

@@ -1178,7 +1178,7 @@ function healingClass:ToolTip_HealingDenied (instancia, numero, barra, keydown)
 
 	--healers denied
 
-		_detalhes:AddTooltipSpellHeaderText (Loc["Healers"], headerColor, #spellsSorted, [[Interface\TUTORIALFRAME\UI-TutorialFrame-LevelUp]], 0.10546875, 0.89453125, 0.05859375, 0.6796875)
+		_detalhes:AddTooltipSpellHeaderText ("Healers", headerColor, #spellsSorted, [[Interface\TUTORIALFRAME\UI-TutorialFrame-LevelUp]], 0.10546875, 0.89453125, 0.05859375, 0.6796875)
 		_detalhes:AddTooltipHeaderStatusbar (r, g, b, barAlha)
 
 		local healersSorted = {}
@@ -2567,7 +2567,7 @@ function healingClass:MontaDetalhesHealingDone (spellid, barra) --deprecated wit
 		if (misc_actor) then
 			local buff_uptime = misc_actor.buff_uptime_spells and misc_actor.buff_uptime_spells._ActorTable [spellid] and misc_actor.buff_uptime_spells._ActorTable [spellid].uptime
 			if (buff_uptime) then
-				hits_string = hits_string .. "  |cFFDDDD44(" .. _math_floor(buff_uptime / breakdownWindowFrame.instancia.showing:GetCombatTime() * 100) .. Loc["% uptime)|r"]
+				hits_string = hits_string .. "  |cFFDDDD44(" .. _math_floor(buff_uptime / breakdownWindowFrame.instancia.showing:GetCombatTime() * 100) .. "% uptime)|r"
 			end
 
 			local amountOfCasts = breakdownWindowFrame.instancia.showing:GetSpellCastAmount(self:Name(), spellName)
@@ -2700,7 +2700,7 @@ function healingClass:MontaDetalhesHealingDone (spellid, barra) --deprecated wit
 
 			t3[1] = 0
 			t3[2] = {p = 100, c = {0.282353, 0.239216, 0.545098, 0.6}}
-			t3[3] = Loc["Spell Empower Average Level: "] .. format("%.2f", empowerLevelSum / empowerAmount)
+			t3[3] = "Spell Empower Average Level: " .. format("%.2f", empowerLevelSum / empowerAmount)
 			t3[4] = ""
 			t3[5] = ""
 			t3[6] = ""
@@ -2708,23 +2708,23 @@ function healingClass:MontaDetalhesHealingDone (spellid, barra) --deprecated wit
 			t3[11] = ""
 
 			if (level1AverageHeal ~= "0") then
-				t3[4] = Loc["Level 1 Average: "] .. level1AverageHeal .. " (" .. (empowerAmountPerLevel[1] or 0) .. ")"
+				t3[4] = "Level 1 Average: " .. level1AverageHeal .. " (" .. (empowerAmountPerLevel[1] or 0) .. ")"
 			end
 
 			if (level2AverageHeal ~= "0") then
-				t3[6] = Loc["Level 2 Average: "] .. level2AverageHeal .. " (" .. (empowerAmountPerLevel[2] or 0) .. ")"
+				t3[6] = "Level 2 Average: " .. level2AverageHeal .. " (" .. (empowerAmountPerLevel[2] or 0) .. ")"
 			end
 
 			if (level3AverageHeal ~= "0") then
-				t3[11] = Loc["Level 3 Average: "] .. level3AverageHeal .. " (" .. (empowerAmountPerLevel[3] or 0) .. ")"
+				t3[11] = "Level 3 Average: " .. level3AverageHeal .. " (" .. (empowerAmountPerLevel[3] or 0) .. ")"
 			end
 
 			if (level4AverageHeal ~= "0") then
-				t3[10] = Loc["Level 4 Average: "] .. level4AverageHeal .. " (" .. (empowerAmountPerLevel[4] or 0) .. ")"
+				t3[10] = "Level 4 Average: " .. level4AverageHeal .. " (" .. (empowerAmountPerLevel[4] or 0) .. ")"
 			end
 
 			if (level5AverageHeal ~= "0") then
-				t3[5] = Loc["Level 5 Average: "] .. level5AverageHeal .. " (" .. (empowerAmountPerLevel[5] or 0) .. ")"
+				t3[5] = "Level 5 Average: " .. level5AverageHeal .. " (" .. (empowerAmountPerLevel[5] or 0) .. ")"
 			end
 		end
 

@@ -461,7 +461,7 @@
 		local newLabel = detailsFramework:NewLabel(frame, nil, "$parentText", "text", "0")
 		newLabel:SetPoint("right", frame, "right", 0, 0)
 		newLabel:SetJustifyH("right")
-		Details:SetFontSize(newLabel, 13.8)
+		Details:SetFontSize(newLabel, 9.8)
 
 		frame:SetHook("OnEnter", OnEnter)
 		frame:SetHook("OnLeave", OnLeave)
@@ -909,11 +909,11 @@ do
 					if (timeType == 1) then
 						local combatTime = combatObject:GetCombatTime()
 						local minutos, segundos = math.floor(combatTime/60), math.floor(combatTime%60)
-						childObject.text:SetText(minutos .. Loc["m "] .. segundos .. Loc["s"])
+						childObject.text:SetText(minutos .. "m " .. segundos .. "s")
 
 					elseif (timeType == 2) then
 						local combatTime = combatObject:GetCombatTime()
-						childObject.text:SetText(combatTime .. Loc["s"])
+						childObject.text:SetText(combatTime .. "s")
 
 					elseif (timeType == 3) then
 						local segmentId = instance:GetSegmentId()
@@ -930,9 +930,9 @@ do
 						local currentCombatTime = combatObject:GetCombatTime()
 
 						if (lastFight) then
-							childObject.text:SetText(currentCombatTime - lastFight:GetCombatTime() .. Loc["s"])
+							childObject.text:SetText(currentCombatTime - lastFight:GetCombatTime() .. "s")
 						else
-							childObject.text:SetText(currentCombatTime .. Loc["s"])
+							childObject.text:SetText(currentCombatTime .. "s")
 						end
 					end
 				end

@@ -183,7 +183,7 @@ function _detalhes:OpenWelcomeWindow()
 	end
 
 -- frame alert
-
+--[[
 	local frame_alert = CreateFrame("frame", nil, window)
 	frame_alert:SetPoint("topright", window)
 	function _detalhes:StopPlayStretchAlert()
@@ -204,7 +204,7 @@ function _detalhes:OpenWelcomeWindow()
 	end
 	frame_alert.alert = CreateFrame("frame", "DetailsWelcomeWindowAlert", UIParent, "ActionBarButtonSpellActivationAlert")
 	frame_alert.alert:SetFrameStrata("FULLSCREEN")
-	frame_alert.alert:Hide()
+	frame_alert.alert:Hide()]]
 
 local window_openned_at = time()
 
@@ -251,7 +251,7 @@ local window_openned_at = time()
 		texto555:SetText(Loc ["STRING_WELCOME_45"])
 		texto555:SetTextColor(1, 1, 1, 1)
 
-		local changemind = g:NewLabel(window, _, "$parentChangeMind55Label", "changemind55Label", Loc ["STRING_WELCOME_2"], "GameFontNormal", 14, "orange")
+		local changemind = g:NewLabel(window, _, "$parentChangeMind55Label", "changemind55Label", Loc ["STRING_WELCOME_2"], "GameFontNormal", 9, "orange")
 		window.changemind55Label:SetPoint("center", window, "center")
 		window.changemind55Label:SetPoint("bottom", window, "bottom", 0, 19)
 		window.changemind55Label.align = "|"
@@ -679,7 +679,7 @@ local window_openned_at = time()
 		numeral_image:SetAlpha(.05)
 		numeral_image:SetTexCoord(1, 0, 0, 1)
 
-		g:NewLabel(window, _, "$parentChangeMindNumeralLabel", "changemindNumeralLabel", Loc ["STRING_WELCOME_2"], "GameFontNormal", 14, "orange")
+		g:NewLabel(window, _, "$parentChangeMindNumeralLabel", "changemindNumeralLabel", Loc ["STRING_WELCOME_2"], "GameFontNormal", 9, "orange")
 		window.changemindNumeralLabel:SetPoint("center", window, "center")
 		window.changemindNumeralLabel:SetPoint("bottom", window, "bottom", 0, 19)
 		window.changemindNumeralLabel.align = "|"
@@ -798,7 +798,7 @@ local window_openned_at = time()
 		ampulheta:SetAlpha(.05)
 		ampulheta:SetTexCoord(1, 0, 0, 1)
 
-		g:NewLabel(window, _, "$parentChangeMind2Label", "changemind2Label", Loc ["STRING_WELCOME_2"], "GameFontNormal", 14, "orange")
+		g:NewLabel(window, _, "$parentChangeMind2Label", "changemind2Label", Loc ["STRING_WELCOME_2"], "GameFontNormal", 9, "orange")
 		window.changemind2Label:SetPoint("center", window, "center")
 		window.changemind2Label:SetPoint("bottom", window, "bottom", 0, 19)
 		window.changemind2Label.align = "|"
@@ -882,7 +882,7 @@ local window_openned_at = time()
 			continuous:SetValue(true)
 		end
 
-		local pleasewait = window:CreateFontString(nil, "overlay", "GameFontHighlight")
+		local pleasewait = window:CreateFontString(nil, "overlay", "GameFontHighlightSmall")
 		pleasewait:SetPoint("bottomright", forward, "topright")
 
 		local free_frame3 = CreateFrame("frame", nil, window)
@@ -890,7 +890,7 @@ local window_openned_at = time()
 			if (window_openned_at+10 > time()) then
 				pleasewait:Show()
 				forward:Disable()
-				pleasewait:SetText(Loc["wait... "] .. window_openned_at + 10 - time())
+				pleasewait:SetText("wait... " .. window_openned_at + 10 - time())
 			else
 				pleasewait:Hide()
 				pleasewait:SetText("")
@@ -938,7 +938,7 @@ local window_openned_at = time()
 		bg:SetAlpha(.05)
 		bg:SetTexCoord(1, 0, 0, 1)
 
-		g:NewLabel(window, _, "$parentChangeMind4Label", "changemind4Label", Loc ["STRING_WELCOME_11"], "GameFontNormal", 14, "orange")
+		g:NewLabel(window, _, "$parentChangeMind4Label", "changemind4Label", Loc ["STRING_WELCOME_11"], "GameFontNormal", 9, "orange")
 		window.changemind4Label:SetPoint("center", window, "center")
 		window.changemind4Label:SetPoint("bottom", window, "bottom", 0, 19)
 		window.changemind4Label.align = "|"
@@ -1126,7 +1126,8 @@ local window_openned_at = time()
 		stretch_image:SetTexCoord(0.716796875, 1, 0.876953125, 1)
 
 		local stretch_frame_alert = CreateFrame("frame", nil, window)
-		stretch_frame_alert:SetScript("OnHide", function()
+		--[[
+        stretch_frame_alert:SetScript("OnHide", function()
 			_detalhes:StopPlayStretchAlert()
 		end)
 		stretch_frame_alert:SetScript("OnShow", function()
@@ -1152,7 +1153,7 @@ local window_openned_at = time()
 				_detalhes:CancelTimer(_detalhes.stopwelcomealert)
 			end
 			_detalhes.stopwelcomealert = _detalhes:ScheduleTimer("StopPlayStretchAlert", 30)
-		end)
+		end)]]
 
 
 		pages [#pages+1] = {bg6, texto5, stretch_image, texto_stretch, stretch_frame_alert}
@@ -1194,6 +1195,7 @@ local window_openned_at = time()
 		instance_button_image:SetTexCoord(0.328125, 0.71484375, 0.724609375, 1)
 
 		local instance_frame_alert = CreateFrame("frame", nil, window)
+        --[[
 		instance_frame_alert:SetScript("OnHide", function()
 			_detalhes:StopPlayStretchAlert()
 		end)
@@ -1221,6 +1223,8 @@ local window_openned_at = time()
 			end
 			_detalhes.stopwelcomealert = _detalhes:ScheduleTimer("StopPlayStretchAlert", 30)
 		end)
+
+        ]]
 
 		pages [#pages+1] = {bg6, texto6, instance_button_image, texto_instance_button, instance_frame_alert}
 
@@ -1322,7 +1326,7 @@ local window_openned_at = time()
 		texto_snap:SetJustifyV ("top")
 		texto_snap:SetTextColor(1, 1, 1, 1)
 		local fonte, _, flags = texto_snap:GetFont()
-		texto_snap:SetFont(fonte, 14, flags)
+		texto_snap:SetFont(fonte, 11, flags)
 
 		local snap_image1 = window:CreateTexture(nil, "overlay")
 		snap_image1:SetTexture([[Interface\Addons\Details\images\icons]])
@@ -1445,6 +1449,8 @@ local window_openned_at = time()
 
 			local bar1 = _detalhes:GetInstance(1):GetRow(1)
 
+            --[[
+
 			frame_alert.alert:SetPoint("topleft", bar1, "topleft", -60, 8)
 			frame_alert.alert:SetPoint("bottomright", bar1, "bottomright", 60, -10)
 
@@ -1465,12 +1471,12 @@ local window_openned_at = time()
 				_detalhes:CancelTimer(_detalhes.stopwelcomealert)
 			end
 			_detalhes.stopwelcomealert = _detalhes:ScheduleTimer("StopPlayStretchAlert", 2)
-
+            ]]
 		end)
-
+        --[[
 		tooltip_frame:SetScript("OnHide", function()
 			_detalhes:StopPlayStretchAlert()
-		end)
+		end)]]
 
 		pages [#pages+1] = {bg88, texto88, micro_image1, texto_micro_display, tooltip_frame}
 

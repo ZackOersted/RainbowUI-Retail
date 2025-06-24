@@ -56,7 +56,7 @@ end
 ---@diagnostic disable: missing-fields
 local LDB = LibStub("LibDataBroker-1.1"):NewDataObject("MythicDungeonTools", {
   type = "data source",
-  text = C_AddOns.GetAddOnMetadata(AddonName, "Title"),
+  text = "Mythic Dungeon Tools",
   icon = "Interface\\AddOns\\"..AddonName.."\\Textures\\MDTMinimap",
   OnClick = function(button, buttonPressed)
     if buttonPressed == "RightButton" then
@@ -77,7 +77,7 @@ local LDB = LibStub("LibDataBroker-1.1"):NewDataObject("MythicDungeonTools", {
   end,
   OnTooltipShow = function(tooltip)
     if not tooltip or not tooltip.AddLine then return end
-    tooltip:AddLine(mythicColor..L["Mythic Dungeon Tools"].."|r")
+    tooltip:AddLine(mythicColor.."Mythic Dungeon Tools|r")
     tooltip:AddLine(L["Click to toggle AddOn Window"])
     tooltip:AddLine(L["Right-click to lock Minimap Button"])
     tooltip:AddLine(L["Middle-click to disable Minimap Button"])
@@ -625,7 +625,7 @@ function MDT:MakeTopBottomTextures(frame)
     frame.topPanelString:SetJustifyV("MIDDLE")
     --frame.topPanelString:SetWidth(600)
     frame.topPanelString:SetHeight(20)
-    frame.topPanelString:SetText(L["Mythic Dungeon Tools"])
+    frame.topPanelString:SetText("Mythic Dungeon Tools")
     frame.topPanelString:ClearAllPoints()
     frame.topPanelString:SetPoint("CENTER", frame.topPanel, "CENTER", 10, 0)
     frame.topPanelString:Show()
@@ -2145,9 +2145,9 @@ function MDT:FormatEnemyHealth(amount)
     if amount >= 1e16 then
       return string.format("%.3f경", amount / 1e16)
     elseif amount >= 1e12 then
-      return string.format("%.3f兆", amount / 1e12)
+      return string.format("%.3f조", amount / 1e12)
     elseif amount >= 1e8 then
-      return string.format("%.2f億", amount / 1e8)
+      return string.format("%.2f억", amount / 1e8)
     elseif amount >= 1e4 then
       return string.format("%.1f만", amount / 1e4)
     else
@@ -2155,9 +2155,9 @@ function MDT:FormatEnemyHealth(amount)
     end
   elseif self:GetLocaleIndex() == 10 or self:GetLocaleIndex() == 11 then
     if amount >= 1e8 then
-      return string.format("%.2f億", amount / 1e8)
+      return string.format("%.2f亿", amount / 1e8)
     elseif amount >= 1e4 then
-      return string.format("%d萬", math.floor(amount / 1e4))
+      return string.format("%d万", math.floor(amount / 1e4))
     else
       return amount
     end

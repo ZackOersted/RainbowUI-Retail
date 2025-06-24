@@ -1,6 +1,6 @@
 
 
-local dversion = 607
+local dversion = 610
 local major, minor = "DetailsFramework-1.0", dversion
 local DF, oldminor = LibStub:NewLibrary(major, minor)
 
@@ -804,7 +804,8 @@ function DF.table.setfrompath(t, path, value)
 		local lastTable
 		local lastKey
 
-		for key in path:gmatch("[%w_]+") do
+		--for key in path:gmatch("[%w_]+") do
+		for key in path:gmatch("[^%.%[%]]+") do
 			lastTable = t
 			lastKey = key
 
@@ -3090,10 +3091,10 @@ end
 --DF.font_templates ["ORANGE_FONT_TEMPLATE"] = {color = "orange", size = 11, font = "Accidental Presidency"}
 --DF.font_templates ["OPTIONS_FONT_TEMPLATE"] = {color = "yellow", size = 12, font = "Accidental Presidency"}
 --DF.font_templates["ORANGE_FONT_TEMPLATE"] = {color = "orange", size = 10, font = DF:GetBestFontForLanguage()}
-DF.font_templates["ORANGE_FONT_TEMPLATE"] = {color = {1, 0.8235, 0, 1}, size = 16, font = DF:GetBestFontForLanguage()}
+DF.font_templates["ORANGE_FONT_TEMPLATE"] = {color = {1, 0.8235, 0, 1}, size = 11, font = DF:GetBestFontForLanguage()}
 --DF.font_templates["OPTIONS_FONT_TEMPLATE"] = {color = "yellow", size = 9.6, font = DF:GetBestFontForLanguage()}
-DF.font_templates["OPTIONS_FONT_TEMPLATE"] = {color = {1, 1, 1, 0.9}, size = 14, font = DF:GetBestFontForLanguage()}
-DF.font_templates["SMALL_SILVER"] = {color = "silver", size = 12, font = DF:GetBestFontForLanguage()}
+DF.font_templates["OPTIONS_FONT_TEMPLATE"] = {color = {1, 1, 1, 0.9}, size = 9.6, font = DF:GetBestFontForLanguage()}
+DF.font_templates["SMALL_SILVER"] = {color = "silver", size = 9, font = DF:GetBestFontForLanguage()}
 --~templates
 --dropdowns
 DF.dropdown_templates = DF.dropdown_templates or {}
@@ -4095,7 +4096,18 @@ function DF:CreateGlowOverlay(parent, antsColor, glowColor)
 		frameName = string.sub(frameName, string.len(frameName)-49)
 	end
 
-	local glowFrame = CreateFrame("frame", frameName, parent, "ActionBarButtonSpellActivationAlert")
+	local glowFrame
+	if (buildInfo >= 110107) then --24-05-2025: in the 11.1.7 patch, the template used here does not exist anymore
+		--possible candidates to replace the template. template name and the parent key to the animation group:
+		--"ActionBarButtonAssistedCombatRotationTemplate".ActiveFrame.GlowAnim
+		--"ActionBarButtonAssistedCombatHighlightTemplate".Anim
+		--"ActionButtonTargetReticleFrameTemplate".HighlightAnim
+		--"ActionButtonTemplate".SpellHighlightAnim
+		glowFrame = CreateFrame("frame", frameName, parent)
+	else
+		glowFrame = CreateFrame("frame", frameName, parent, "ActionBarButtonSpellActivationAlert")
+	end
+
 	--local glowFrame = CreateFrame("frame", frameName, parent)
 	glowFrame:HookScript("OnShow", glow_overlay_onshow)
 	glowFrame:HookScript("OnHide", glow_overlay_onhide)

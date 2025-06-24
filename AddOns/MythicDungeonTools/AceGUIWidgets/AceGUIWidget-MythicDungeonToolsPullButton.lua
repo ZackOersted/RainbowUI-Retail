@@ -1075,7 +1075,7 @@ local function Constructor()
     enemyPortraits[i].overlay:Hide()
 
     enemyPortraits[i].fontString = button:CreateFontString(nil, "BACKGROUND", nil)
-    enemyPortraits[i].fontString:SetFont(STANDARD_TEXT_FONT, 10, "OUTLINE", "")
+    enemyPortraits[i].fontString:SetFont("Fonts\\FRIZQT__.TTF", 10, "OUTLINE", "")
     enemyPortraits[i].fontString:SetTextColor(1, 1, 1, 1);
     enemyPortraits[i].fontString:SetWidth(25)
     enemyPortraits[i].fontString:SetHeight(10)
@@ -1099,7 +1099,7 @@ local function Constructor()
 
   --pull percentage
   local percentageFontString = button:CreateFontString(nil, "BACKGROUND", nil)
-  percentageFontString:SetFont(STANDARD_TEXT_FONT, 10, "OUTLINE", "")
+  percentageFontString:SetFont("Fonts\\FRIZQT__.TTF", 10, "OUTLINE", "")
   percentageFontString:SetTextColor(1, 1, 1, 1);
   percentageFontString:SetWidth(50)
   percentageFontString:SetHeight(10)
@@ -1108,7 +1108,7 @@ local function Constructor()
 
   --multiple reaping wave indicator
   local multiReapingFontString = button:CreateFontString(nil, "BACKGROUND", nil)
-  multiReapingFontString:SetFont(STANDARD_TEXT_FONT, 10, "OUTLINE", "")
+  multiReapingFontString:SetFont("Fonts\\FRIZQT__.TTF", 10, "OUTLINE", "")
   multiReapingFontString:SetTextColor(1, 1, 1, 1);
   multiReapingFontString:SetWidth(50)
   multiReapingFontString:SetHeight(10)
@@ -1125,7 +1125,7 @@ local function Constructor()
 
   --multiple prideful wave indicator
   local multiPridefulFontString = button:CreateFontString(nil, "BACKGROUND", nil)
-  multiPridefulFontString:SetFont(STANDARD_TEXT_FONT, 10, "OUTLINE", "")
+  multiPridefulFontString:SetFont("Fonts\\FRIZQT__.TTF", 10, "OUTLINE", "")
   multiPridefulFontString:SetTextColor(1, 1, 1, 1);
   multiPridefulFontString:SetWidth(50)
   multiPridefulFontString:SetHeight(10)
@@ -1142,7 +1142,7 @@ local function Constructor()
 
   --shrouded counter
   local shroudedCounter = button:CreateFontString(nil, "BACKGROUND", nil)
-  shroudedCounter:SetFont(STANDARD_TEXT_FONT, 10, "OUTLINE", "")
+  shroudedCounter:SetFont("Fonts\\FRIZQT__.TTF", 10, "OUTLINE", "")
   shroudedCounter:SetTextColor(1, 1, 1, 1);
   shroudedCounter:SetWidth(50)
   shroudedCounter:SetHeight(10)
@@ -1151,7 +1151,7 @@ local function Constructor()
 
   --count per health indicator
   local countPerHealthFontString = button:CreateFontString(nil, "BACKGROUND", nil)
-  countPerHealthFontString:SetFont(STANDARD_TEXT_FONT, 10, "OUTLINE", "")
+  countPerHealthFontString:SetFont("Fonts\\FRIZQT__.TTF", 10, "OUTLINE", "")
   countPerHealthFontString:SetTextColor(1, 1, 1, 1);
   countPerHealthFontString:SetWidth(50)
   countPerHealthFontString:SetHeight(10)

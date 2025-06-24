@@ -28,7 +28,7 @@ function Details222.StartUp.StartMeUp()
 		Details:FillUserCustomSpells()
 	end)
 
-	Details.challengeModeMapId = C_ChallengeMode and C_ChallengeMode.GetActiveChallengeMapID()
+	Details.challengeModeMapId = C_ChallengeMode and C_ChallengeMode.GetActiveChallengeMapID and C_ChallengeMode.GetActiveChallengeMapID()
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --row single click, this determines what happen when the user click on a bar
@@ -102,6 +102,10 @@ function Details222.StartUp.StartMeUp()
 	Details:InitializeRunCodeWindow()
 	Details:InitializePlaterIntegrationWindow()
 	Details:InitializeMacrosWindow()
+
+	if (Details.InitializeEncounterSwapper) then
+		Details:InitializeEncounterSwapper()
+	end
 
 	Details222.CreateAllDisplaysFrame()
 
@@ -311,7 +315,7 @@ function Details222.StartUp.StartMeUp()
 
 		Details.listener:RegisterEvent("PLAYER_TARGET_CHANGED")
 
-		if (not DetailsFramework.IsTimewalkWoW()) then
+		if (not DetailsFramework.IsTimewalkWoW()) then --C_EventUtils.IsEventValid
 			Details.listener:RegisterEvent("PET_BATTLE_OPENING_START")
 			Details.listener:RegisterEvent("PET_BATTLE_CLOSE")
 			Details.listener:RegisterEvent("PLAYER_SPECIALIZATION_CHANGED")
@@ -406,10 +410,8 @@ function Details222.StartUp.StartMeUp()
 			lowerInstanceId = Details:GetInstance(lowerInstanceId)
 			if (lowerInstanceId) then
 				--check if there's changes in the size of the news string
-				if (Details.last_changelog_size ~= #Loc["STRING_VERSION_LOG"]) then
+				if (false and Details.last_changelog_size ~= #Loc["STRING_VERSION_LOG"]) then
 					Details.last_changelog_size = #Loc["STRING_VERSION_LOG"]
-
-					if (true) then return end --stop opening the new window automatically
 
 					if (Details.auto_open_news_window) then
 						C_Timer.After(5, function()
@@ -421,7 +423,7 @@ function Details222.StartUp.StartMeUp()
 						C_Timer.After(10, function()
 							if (lowerInstanceId:IsEnabled()) then
 								lowerInstanceId:InstanceAlert(Loc ["STRING_VERSION_UPDATE"], {[[Interface\GossipFrame\AvailableQuestIcon]], 16, 16, false}, 60, {Details.OpenNewsWindow}, true)
-								Details:Msg(Loc["A new version has been installed: /details news"]) --localize-me
+								Details:Msg("A new version has been installed: /details news") --localize-me
 							end
 						end)
 					end
@@ -630,7 +632,7 @@ function Details222.StartUp.StartMeUp()
 				---@type trinketdata
 				local thisTrinketData = {
 					itemName = C_Item.GetItemNameByID(trinketTable.itemId),
-					spellName = Details222.GetSpellInfo(spellId) or Loc["spell not found"],
+					spellName = Details222.GetSpellInfo(spellId) or "spell not found",
 					lastActivation = 0,
 					lastPlayerName = "",
 					totalCooldownTime = 0,
@@ -736,7 +738,7 @@ function Details222.StartUp.StartMeUp()
 
 	if (GetExpansionLevel() == 10) then
 		if (not Details.data_wipes_exp["11"]) then
-			Details:Msg(Loc["New expansion detected, clearing data..."])
+			Details:Msg("New expansion detected, clearing data...")
 			Details:Destroy(Details.encounter_spell_pool or {})
 			Details:Destroy(Details.boss_mods_timers or {})
 			Details:Destroy(Details.spell_school_cache or {})

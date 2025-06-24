@@ -3119,6 +3119,9 @@ L["Bounty Hunter"] = "Bounty Hunter"
 L[ [=[Bounty stacks 
 after this pull]=] ] = [=[Bounty stacks 
 after this pull]=]
+--[[Translation missing --]]
+L[ [=[Bounty stacks 
+after this pull]=] ] = ""
 L["Bracken Warscourge"] = "Bracken Warscourge"
 L["Brackenhide Shaper"] = "Brackenhide Shaper"
 L["brackenhideCage"] = "Meat Storage"
@@ -5529,6 +5532,3 @@ L["Zul'Gurub"] = "Zul'Gurub"
 L["Zuraal the Ascended"] = "Zuraal the Ascended"
 L["Zuramat the Obliterator"] = "Zuramat the Obliterator"
 
--- 自行加入
-L["Mythic Dungeon Tools"] = "Mythic Dungeon Tools"
-L["MythicDungeonTools"] = "Mythic Dungeon Tools"

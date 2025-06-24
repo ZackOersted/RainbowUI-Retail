@@ -1,5 +1,6 @@
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+	---@type details
 	local Details = _G.Details
 	local Loc = LibStub("AceLocale-3.0"):GetLocale ( "Details" )
 	local addonName, Details222 = ...
@@ -30,6 +31,50 @@
 	local GetNumGroupMembers = GetNumGroupMembers --wow api local
 	local UnitAffectingCombat = UnitAffectingCombat --wow api local
 	local _InCombatLockdown = InCombatLockdown --wow api local
+
+
+	---@class details : table
+	---@field gump detailsframework
+	---@field tabela_instancias instance[]
+	---@field tabela_vigente combat
+	---@field tabela_overall_combat combat
+	---@field tabela_pets table
+	---@field IsInMythicPlus fun(self:details):boolean
+	---@field FindBuffDuration fun(self:details, unitId:string, spellId:number, casterName:string):number|nil, number|nil
+	---@field FindBuffDurationByUnitName fun(self:details, targetString:string, spellId:number, casterString:string):number|nil, number|nil
+	---@field FindDebuffDuration fun(self:details, unitId:string, spellId:number, casterName:string):number|nil, number|nil
+	---@field FindDebuffDurationByUnitName fun(self:details, targetString:string, spellId:number, casterString:string):number|nil, number|nil
+	---@field FindBuffCastedBy fun(self:details, unitId:string, buffSpellId:number, casterName:string):string|nil, string|nil, number|nil, string|nil, number|nil, number|nil, string|nil, boolean|nil, boolean|nil, number|nil, boolean|nil, boolean|nil, boolean|nil, boolean|nil
+	---@field FindBuffCastedByUnitName fun(self:details, targetString:string, buffSpellId:number, casterString:string):string|nil, string|nil, number|nil, string|nil, number|nil, number|nil, string|nil, boolean|nil, boolean|nil, number|nil, boolean|nil, boolean|nil, boolean|nil, boolean|nil
+	---@field FindUnitIDByUnitSerial fun(self:details, unitSerial:string):string|nil
+	---@field GetNpcIdFromGuid fun(self:details, guid:string):number
+	---@field GetSourceFromNpcId fun(self:details, npcId:number):string?
+	---@field GetRaidLeader fun(self:details):string, string
+	---@field GetOrderNumber fun(self:details):number
+	---@field LowerizeKeys fun(self:details, _table:table):table
+	---@field UseEastAsianNumericalSystem fun(self:details)
+	---@field UseWestNumericalSystem fun(self:details)
+	---@field ToK fun(self:details, numero:number):string
+	---@field ToK2 fun(self:details, numero:number):string
+	---@field ToK0 fun(self:details, numero:number):string
+	---@field ToKMin fun(self:details, numero:number):string
+	---@field ToK2Min fun(self:details, numero:number):string
+	---@field ToK0Min fun(self:details, numero:number):string
+	---@field ToKReport fun(self:details, numero:number):string
+	---@field Format fun(self:details, n:number, custom:string):string
+	---@field comma_value fun(self:details, n:number):string
+	---@field comma_value_raw fun(self:details, n:string):string
+	---@field FadeHandler table
+	---@field FadeHandler.frames table
+	---@field FadeHandler.OnUpdateFrame frame
+	---@field FadeHandler.Fader fun(self:details, frame:frame, animationType:string, speed:number, hideType:string, param5:string)
+	---@field NoToK fun(self:details, numero:number):number
+	---@field GetCurrentToKFunction fun(self:details):function
+	---@field SetNumericalSystemOverride fun(self:details, language:string)
+	---@field GetNumericalSystem fun(self:details):number
+	---@field SelectNumericalSystem fun(self:details, system:number)
+	---@field UpdateToKFunctions fun(self:details)
+
 
 	local playerRealmName = GetRealmName()
 
@@ -414,12 +459,8 @@
 --details api functions
 
 	--get the npc id from guid
-	function Details:GetNpcIdFromGuid (guid)
-		local NpcId = select( 6, strsplit( "-", guid ) )
-		if (NpcId) then
-			return tonumber( NpcId )
-		end
-		return 0
+	function Details:GetNpcIdFromGuid(guid)
+		return tonumber(guid:match("^[^%-]*%-[^%-]*%-[^%-]*%-[^%-]*%-[^%-]*%-([^%-]*)")) or 0
 	end
 
 	function Details:GetSourceFromNpcId (npcId)
@@ -848,7 +889,7 @@
 			language = "auto"
 		end
 		Details.numerical_system_symbols = language
-		Details:Msg(Loc["NumSystem override is now:"], language)
+		Details:Msg("NumSystem override is now:", language)
 
 		Details:SelectNumericalSystem()
 	end
@@ -909,7 +950,7 @@
 
 		local okey, value = _pcall (func, parameters_cache [1], parameters_cache [2], parameters_cache [3], parameters_cache [4], arguments_cache[1], arguments_cache[2], arguments_cache[3])
 		if (not okey) then
-			Details:Msg(Loc["|cFFFF9900error on custom text|r:"], value)
+			Details:Msg("|cFFFF9900error on custom text|r:", value)
 			return 0
 		end
 		return value or 0
@@ -1437,7 +1478,7 @@ end
 						if (ThisGradient.Func) then
 							local okey, errortext = _pcall (ThisGradient.Func, ThisGradient.FuncParam)
 							if (not okey) then
-								Details:Msg(Loc["GradientEffect() end function error:"], errortext)
+								Details:Msg("GradientEffect() end function error:", errortext)
 							end
 						end
 
@@ -1865,8 +1906,8 @@ end
     Details222.BarIconSetList = {
         {value = [[]], label = Loc ["STRING_OPTIONS_BAR_ICONFILE1"], icon = defaultIconTexture, texcoord = defaultClassIconCoords, iconsize = defaultIconSize, iconcolor = {1, 1, 1, .3}},
         {value = [[Interface\AddOns\Details\images\classes_small]], label = Loc ["STRING_OPTIONS_BAR_ICONFILE2"], icon = defaultIconTexture, texcoord = defaultClassIconCoords, iconsize = defaultIconSize},
-        {value = [[Interface\AddOns\Details\images\spec_icons_normal]], label = Loc["Specialization"], isSpec = true, icon = [[Interface\AddOns\Details\images\icons]], texcoord = defaultSpecIconCoords, iconsize = defaultIconSize},
-        {value = [[Interface\AddOns\Details\images\spec_icons_normal_alpha]], label = Loc["Specialization Alpha"], isSpec = true, icon = [[Interface\AddOns\Details\images\icons]], texcoord = defaultSpecIconCoords, iconsize = defaultIconSize},
+        {value = [[Interface\AddOns\Details\images\spec_icons_normal]], label = "Specialization", isSpec = true, icon = [[Interface\AddOns\Details\images\icons]], texcoord = defaultSpecIconCoords, iconsize = defaultIconSize},
+        {value = [[Interface\AddOns\Details\images\spec_icons_normal_alpha]], label = "Specialization Alpha", isSpec = true, icon = [[Interface\AddOns\Details\images\icons]], texcoord = defaultSpecIconCoords, iconsize = defaultIconSize},
         {value = [[Interface\AddOns\Details\images\classes_small_bw]], label = Loc ["STRING_OPTIONS_BAR_ICONFILE3"], icon = defaultIconTexture, texcoord = defaultClassIconCoords, iconsize = defaultIconSize},
         {value = [[Interface\AddOns\Details\images\classes_small_alpha]], label = Loc ["STRING_OPTIONS_BAR_ICONFILE4"], icon = defaultIconTexture, texcoord = defaultClassIconCoords, iconsize = defaultIconSize},
         {value = [[Interface\AddOns\Details\images\classes_small_alpha_bw]], label = Loc ["STRING_OPTIONS_BAR_ICONFILE6"], icon = defaultIconTexture, texcoord = defaultClassIconCoords, iconsize = defaultIconSize},

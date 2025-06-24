@@ -684,7 +684,7 @@ function ilvl_core:CalcItemLevel(unitid, guid, shout)
 		--register
 		if (average > 0) then
 			if (shout) then
-				Details:Msg(UnitName(unitid) .. Loc[" item level: "] .. average)
+				Details:Msg(UnitName(unitid) .. " item level: " .. average)
 			end
 
 			if (average > MIN_ILEVEL_TO_STORE) then
@@ -728,7 +728,7 @@ function ilvl_core:CalcItemLevel(unitid, guid, shout)
 			if (type(ilvl_core.forced_inspects [guid].callback) == "function") then
 				local okey, errortext = pcall(ilvl_core.forced_inspects[guid].callback, guid, unitid, ilvl_core.forced_inspects[guid].param1, ilvl_core.forced_inspects[guid].param2)
 				if (not okey) then
-					Details:Msg(Loc["Error on QueryInspect callback: "] .. errortext)
+					Details:Msg("Error on QueryInspect callback: " .. errortext)
 				end
 			end
 			ilvl_core.forced_inspects [guid] = nil
@@ -1100,27 +1100,27 @@ function Details:DecompressData(data, dataType)
 
 			dataCompressed = LibDeflate:DecodeForPrint(data)
 			if (not dataCompressed) then
-				Details:Msg(Loc["couldn't decode the data."])
+				Details:Msg("couldn't decode the data.")
 				return false
 			end
 
 		elseif (dataType == "comm") then
 			dataCompressed = LibDeflate:DecodeForWoWAddonChannel(data)
 			if (not dataCompressed) then
-				Details:Msg(Loc["couldn't decode the data."])
+				Details:Msg("couldn't decode the data.")
 				return false
 			end
 		end
 		local dataSerialized = LibDeflate:DecompressDeflate(dataCompressed)
 
 		if (not dataSerialized) then
-			Details:Msg(Loc["couldn't uncompress the data."])
+			Details:Msg("couldn't uncompress the data.")
 			return false
 		end
 
 		local okay, data = LibAceSerializer:Deserialize(dataSerialized)
 		if (not okay) then
-			Details:Msg(Loc["couldn't unserialize the data."])
+			Details:Msg("couldn't unserialize the data.")
 			return false
 		end
 
@@ -1914,7 +1914,7 @@ hooksecurefunc("ChatFrame_DisplayTimePlayed", function()
 			local levelText = TIME_PLAYED_LEVEL and TIME_PLAYED_LEVEL:gsub("%%s", "") or ""
 			for fontString in ChatFrame1.fontStringPool:EnumerateActive() do
 				if (fontString:GetText() and fontString:GetText():find(levelText)) then
-					print(Details.GetPlayTimeOnClassString() .. " \n(不顯示此訊息請輸入 /details playedclass)")
+					print(Details.GetPlayTimeOnClassString() .. " \ncommand: /details playedclass")
 					break
 				end
 			end
@@ -1945,7 +1945,7 @@ Details.UpdateAddOnMemoryUsage_Custom = function()
 		if (deltaTime >= 500) then
 			bigStutterCounter = bigStutterCounter + 1
 			if (bigStutterCounter >= 6) then
-				Details:Msg(Loc["an addon made your game freeze for more than a half second, use '/details perf' to know more."])
+				Details:Msg("an addon made your game freeze for more than a half second, use '/details perf' to know more.")
 				bigStutterCounter = -10000 --make this msg appear only once
 			end
 		end
@@ -1954,15 +1954,15 @@ Details.UpdateAddOnMemoryUsage_Custom = function()
 		local stutterDegree = 0
 		if (stutterCounter > 60) then
 			if (deltaTime < 48) then
-				Details:Msg(Loc["some addon may be causing small framerate stuttering, use '/details perf' to know more."])
+				Details:Msg("some addon may be causing small framerate stuttering, use '/details perf' to know more.")
 				stutterDegree = 1
 
 			elseif (deltaTime <= 100) then
-				Details:Msg(Loc["some addon may be causing framerate drops, use '/details perf' to know more."])
+				Details:Msg("some addon may be causing framerate drops, use '/details perf' to know more.")
 				stutterDegree = 2
 
 			else
-				Details:Msg(Loc["some addon might be causing performance issues, use '/details perf' to know more."])
+				Details:Msg("some addon might be causing performance issues, use '/details perf' to know more.")
 				stutterDegree = 3
 			end
 
@@ -1973,7 +1973,7 @@ Details.UpdateAddOnMemoryUsage_Custom = function()
 			deltaTime = deltaTime,
 			callStack = callStack,
 			culpritFunc = "_G.UpdateAddOnMemoryUsage()",
-			culpritDesc = Loc["Calculates memory usage of addons"],
+			culpritDesc = "Calculates memory usage of addons",
 		}
 	end
 end

@@ -274,7 +274,7 @@
 				---@type instance
 				local lowerInstanceObject = Details:GetInstance(lowerInstanceId)
 				if (lowerInstanceObject) then
-					lowerInstanceObject:InstanceAlert(Loc["combat ignored: less than 5 seconds."], {[[Interface\BUTTONS\UI-GROUPLOOT-PASS-DOWN]], 18, 18, false, 0, 1, 0, 1}, 20, {function() Details:Msg(Loc["combat ignored: elapsed time less than 5 seconds."]); Details:Msg(Loc["add '|cFFFFFF00Details.minimum_combat_time = 2;|r' on Auto Run Code to change the minimum time."]) end})
+					lowerInstanceObject:InstanceAlert("combat ignored: less than 5 seconds.", {[[Interface\BUTTONS\UI-GROUPLOOT-PASS-DOWN]], 18, 18, false, 0, 1, 0, 1}, 20, {function() Details:Msg("combat ignored: elapsed time less than 5 seconds."); Details:Msg("add '|cFFFFFF00Details.minimum_combat_time = 2;|r' on Auto Run Code to change the minimum time.") end})
 					Details:SetTutorialCVar("MIN_COMBAT_TIME", true)
 				end
 			end
@@ -306,7 +306,7 @@
 
 		--is in a m+ dungeon?
 		Details222.MythicPlus.debug_auras = {}
-		local mythicLevel = C_ChallengeMode and C_ChallengeMode.GetActiveKeystoneInfo() or 1
+		local mythicLevel = C_ChallengeMode and C_ChallengeMode.GetActiveKeystoneInfo() or 1 --not mop friendly
 		if (mythicLevel) then
 			if (Details222.MythicPlus.debug_auras) then
 				--iterate among all actors on the utility container and store the update of each buff
@@ -605,7 +605,7 @@
 		end
 
 		--tag as a mythic dungeon segment, can be any type of segment, this tag also avoid the segment to be tagged as trash
-		local mythicLevel = C_ChallengeMode and C_ChallengeMode.GetActiveKeystoneInfo()
+		local mythicLevel = C_ChallengeMode and C_ChallengeMode.GetActiveKeystoneInfo and C_ChallengeMode.GetActiveKeystoneInfo()
 		if (mythicLevel and mythicLevel >= 2) then
 			currentCombat.is_mythic_dungeon_segment = true
 			currentCombat.is_mythic_dungeon_run_id = Details.mythic_dungeon_id
@@ -1019,11 +1019,11 @@
 		end
 
 		--register chart data
-		Details:TimeDataRegister(Loc["Your Team Damage"], string_arena_myteam_damage, nil, "Details!", "v1.0", [[Interface\ICONS\Ability_DualWield]], true, true)
-		Details:TimeDataRegister(Loc["Enemy Team Damage"], string_arena_enemyteam_damage, nil, "Details!", "v1.0", [[Interface\ICONS\Ability_DualWield]], true, true)
+		Details:TimeDataRegister("Your Team Damage", string_arena_myteam_damage, nil, "Details!", "v1.0", [[Interface\ICONS\Ability_DualWield]], true, true)
+		Details:TimeDataRegister("Enemy Team Damage", string_arena_enemyteam_damage, nil, "Details!", "v1.0", [[Interface\ICONS\Ability_DualWield]], true, true)
 
-		Details:TimeDataRegister(Loc["Your Team Healing"], string_arena_myteam_heal, nil, "Details!", "v1.0", [[Interface\ICONS\Ability_DualWield]], true, true)
-		Details:TimeDataRegister(Loc["Enemy Team Healing"], string_arena_enemyteam_heal, nil, "Details!", "v1.0", [[Interface\ICONS\Ability_DualWield]], true, true)
+		Details:TimeDataRegister("Your Team Healing", string_arena_myteam_heal, nil, "Details!", "v1.0", [[Interface\ICONS\Ability_DualWield]], true, true)
+		Details:TimeDataRegister("Enemy Team Healing", string_arena_enemyteam_heal, nil, "Details!", "v1.0", [[Interface\ICONS\Ability_DualWield]], true, true)
 
 		Details.lastArenaStartTime = GetTime()
 
@@ -1095,11 +1095,11 @@
 			Details:CancelTimer(Details.start_arena, true)
 		end
 
-		Details:TimeDataUnregister(Loc["Your Team Damage"])
-		Details:TimeDataUnregister(Loc["Enemy Team Damage"])
+		Details:TimeDataUnregister("Your Team Damage")
+		Details:TimeDataUnregister("Enemy Team Damage")
 
-		Details:TimeDataUnregister(Loc["Your Team Healing"])
-		Details:TimeDataUnregister(Loc["Enemy Team Healing"])
+		Details:TimeDataUnregister("Your Team Healing")
+		Details:TimeDataUnregister("Enemy Team Healing")
 
 		Details:SendEvent("COMBAT_ARENA_END")
 

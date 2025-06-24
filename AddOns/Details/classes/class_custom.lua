@@ -20,6 +20,15 @@
 
 	local Loc = LibStub("AceLocale-3.0"):GetLocale("Details")
 
+	---@class details : table
+	---@field DoesCustomDisplayExists fun(self:details, customDisplayName:string):number? return the index of the custom display if it exists, otherwise nil
+	---@field GetClassCustom fun(self:details):table return the custom class
+	---@field CreateCustomDisplayObject fun(self:details, name:string, icon:any, searchScript:string, tooltipScript:string?, totalScript:string?, percentScript:string?):table return a custom display object
+	---@field InstallCustomObject fun(self:details, customObject:table):boolean install a custom display object
+	---@field GetNumCustomDisplays fun(self:details):number return the number of custom displays
+	---@field GetCustomDisplay fun(self:details, index:number):table return the custom display object at the given index
+	---@field RemoveCustomObject fun(self:details, customObjectName:string):boolean remove a custom display object
+
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --constants
 
@@ -44,6 +53,45 @@
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --core
+
+	function Details:GetCustomClass()
+		return classCustom
+	end
+
+	function Details:DoesCustomDisplayExists(customDisplayName)
+		for index, customDisplayObject in ipairs(Details.custom) do
+			if (customDisplayObject:GetName() == customDisplayName) then
+				return index
+			end
+		end
+	end
+
+	---@param self details
+	---@param name string
+	---@param icon any
+	---@param searchScript string
+	---@param tooltipScript string?
+	---@param totalScript string?
+	---@param percentScript string?
+	function Details:CreateCustomDisplayObject(name, icon, searchScript, tooltipScript, totalScript, percentScript)
+		local customObject = classCustom:CreateCustomDisplayObject()
+		customObject.name = name
+		customObject.icon = icon
+		customObject.script = searchScript
+		customObject.tooltip = tooltipScript
+		customObject.total_script = totalScript
+		customObject.percent_script = percentScript
+		customObject.script_version = 1
+		return customObject
+	end
+
+	function Details:GetNumCustomDisplays()
+		return #Details.custom
+	end
+
+	function Details:GetCustomDisplay(index)
+		return Details.custom[index]
+	end
 
 	function classCustom:GetCombatContainerIndex (attribute)
 		return combatContainers [attribute]
@@ -91,22 +139,26 @@
 			if (Details.custom_function_cache [instanceObject.customName]) then
 				func = Details.custom_function_cache [instanceObject.customName]
 			else
+				--for k,v in pairs(customObject) do
+				--	print(k,v)
+				--end
+
 				local errortext
 				func, errortext = loadstring (customObject.script)
 				if (func) then
 					DetailsFramework:SetEnvironment(func)
 					Details.custom_function_cache [instanceObject.customName] = func
 				else
-					Details:Msg(Loc["|cFFFF9900error compiling code for custom display "] .. (instanceObject.customName or "") ..  " |r:", errortext)
+					Details:Msg("|cFFFF9900error compiling code for custom display " .. (instanceObject.customName or "") ..  " |r:", errortext)
 				end
 
-				if (customObject.tooltip) then
+				if (customObject.tooltip and type(customObject.tooltip) == "string") then
 					local tooltip_script, errortext = loadstring (customObject.tooltip)
 					if (tooltip_script) then
 						DetailsFramework:SetEnvironment(tooltip_script)
 						Details.custom_function_cache [instanceObject.customName .. "Tooltip"] = tooltip_script
 					else
-						Details:Msg(Loc["|cFFFF9900error compiling tooltip code for custom display "] .. (instanceObject.customName or "") ..  " |r:", errortext)
+						Details:Msg("|cFFFF9900error compiling tooltip code for custom display " .. (instanceObject.customName or "") ..  " |r:", errortext)
 					end
 					scriptTypeName = "tooltip"
 				end
@@ -117,7 +169,7 @@
 						DetailsFramework:SetEnvironment(total_script)
 						Details.custom_function_cache [instanceObject.customName .. "Total"] = total_script
 					else
-						Details:Msg(Loc["|cFFFF9900error compiling total code for custom display "] .. (instanceObject.customName or "") ..  " |r:", errortext)
+						Details:Msg("|cFFFF9900error compiling total code for custom display " .. (instanceObject.customName or "") ..  " |r:", errortext)
 					end
 					scriptTypeName = "total"
 				end
@@ -128,7 +180,7 @@
 						DetailsFramework:SetEnvironment(percent_script)
 						Details.custom_function_cache [instanceObject.customName .. "Percent"] = percent_script
 					else
-						Details:Msg(Loc["|cFFFF9900error compiling percent code for custom display "] .. (instanceObject.customName or "") ..  " |r:", errortext)
+						Details:Msg("|cFFFF9900error compiling percent code for custom display " .. (instanceObject.customName or "") ..  " |r:", errortext)
 					end
 					scriptTypeName = "percent"
 				end
@@ -139,7 +191,7 @@
 				Details:EndRefresh (instanceObject, 0, combatObject, combatObject [1])
 			end
 
-			local okey, _total, _top, _amount = pcall (func, combatObject, instance_container, instanceObject)
+			local okey, _total, _top, _amount = xpcall (func, geterrorhandler(), combatObject, instance_container, instanceObject)
 			if (not okey) then
 				local errorText = _total
 				Details:Msg("|cFFFF9900error on display " .. customObject:GetName() .. " (" .. scriptTypeName .. ")|r:", errorText)
@@ -206,9 +258,9 @@
 					local percent, ptotal
 
 					if (percent_script) then
-						okey, percent = pcall (percent_script, floor(actor.value), top, total, combatObject, instanceObject, actor)
+						okey, percent = xpcall (percent_script, geterrorhandler(), floor(actor.value), top, total, combatObject, instanceObject, actor)
 						if (not okey) then
-							Details:Msg(Loc["|cFFFF9900percent script error|r:"], percent)
+							Details:Msg("|cFFFF9900percent script error|r:", percent)
 							return Details:EndRefresh (instanceObject, 0, combatObject, combatObject [1])
 						end
 					else
@@ -216,9 +268,9 @@
 					end
 
 					if (total_script) then
-						local okey, value = pcall (total_script, floor(actor.value), top, total, combatObject, instanceObject, actor)
+						local okey, value = xpcall (total_script, geterrorhandler(), floor(actor.value), top, total, combatObject, instanceObject, actor)
 						if (not okey) then
-							Details:Msg(Loc["|cFFFF9900total script error|r:"], value)
+							Details:Msg("|cFFFF9900total script error|r:", value)
 							return Details:EndRefresh (instanceObject, 0, combatObject, combatObject [1])
 						end
 
@@ -493,9 +545,9 @@
 		--percent
 			if (percent_script) then
 				--local value, top, total, combat, instance = ...
-				okey, percent = pcall (percent_script, self.value, top, total, combat, instance, self)
+				okey, percent = xpcall (percent_script, geterrorhandler(), self.value, top, total, combat, instance, self)
 				if (not okey) then
-					Details:Msg(Loc["|cFFFF9900error on custom display function|r:"], percent)
+					Details:Msg("|cFFFF9900error on custom display function|r:", percent)
 					return Details:EndRefresh (instance, 0, combat, combat [1])
 				end
 			else
@@ -512,9 +564,9 @@
 
 		--total done
 			if (total_script) then
-				local okey, value = pcall (total_script, self.value, top, total, combat, instance, self)
+				local okey, value = xpcall (total_script, geterrorhandler(), self.value, top, total, combat, instance, self)
 				if (not okey) then
-					Details:Msg(Loc["|cFFFF9900error on custom display function|r:"], value)
+					Details:Msg("|cFFFF9900error on custom display function|r:", value)
 					return Details:EndRefresh (instance, 0, combat, combat [1])
 				end
 
@@ -902,9 +954,9 @@
 
 	function classCustom:CreateCustomDisplayObject()
 		return setmetatable({
-			name = Loc["new custom"],
+			name = "new custom",
 			icon = [[Interface\ICONS\TEMP]],
-			author = UNKNOWN, -- 需要自行修改為大寫
+			author = "unknown",
 			attribute = "damagedone",
 			source = "[all]",
 			target = "[all]",
@@ -951,9 +1003,9 @@
 		if (customObject:IsScripted()) then
 			if (customObject.tooltip) then
 				local func = Details.custom_function_cache [instanceObject.customName .. "Tooltip"]
-				local okey, errortext = pcall(func, actorObject, instanceObject.showing, instanceObject, keydown)
+				local okey, errortext = xpcall(func, geterrorhandler(), actorObject, instanceObject.showing, instanceObject, keydown)
 				if (not okey) then
-					Details:Msg(Loc["|cFFFF9900error on custom display tooltip function|r:"], errortext)
+					Details:Msg("|cFFFF9900error on custom display tooltip function|r:", errortext)
 					return false
 				end
 			end
@@ -1052,7 +1104,7 @@
 
 		if (not Details.tabela_instancias) then
 			--do not remove customs while the addon is loading.
-			return
+			return false
 		end
 
 		table.remove (Details.custom, index)
@@ -1069,6 +1121,8 @@
 		end
 
 		Details.switch:OnRemoveCustom (index)
+
+		return true
 	end
 
 	--export for plugins
@@ -1156,7 +1210,10 @@
 			setmetatable(object, Details.atributo_custom)
 			object.__index = Details.atributo_custom
 			Details.custom [#Details.custom+1] = object
+			return true
 		end
+
+		return false
 	end
 
 	function Details222.GetCustomDisplayIDByName(customDisplayName)
@@ -1513,7 +1570,7 @@
 			attribute = false,
 			spellid = false,
 			author = "Terciob",
-			desc = Loc["Show the crowd control amount for each player."],
+			desc = "Show the crowd control amount for each player.",
 			source = false,
 			target = false,
 			script_version = 12,
@@ -1617,7 +1674,7 @@
 			attribute = false,
 			spellid = false,
 			author = "Terciob",
-			desc = Loc["Show the amount of crowd control received for each player."],
+			desc = "Show the amount of crowd control received for each player.",
 			source = false,
 			target = false,
 			script_version = 4,
@@ -2256,7 +2313,7 @@
 			attribute = false,
 			spellid = false,
 			author = "Terciob",
-			desc = Loc["Show overall damage done on the fly."],
+			desc = "Show overall damage done on the fly.",
 			source = false,
 			target = false,
 			script_version = 8,
@@ -2428,7 +2485,7 @@
 			attribute = false,
 			spellid = false,
 			author = "Terciob",
-			desc = Loc["Damage done to shields"],
+			desc = "Damage done to shields",
 			source = false,
 			target = false,
 			script_version = 1,

@@ -1188,7 +1188,7 @@ function mythicDungeonFrames.ShowEndOfMythicPlusPanel()
 			readyFrame.bottomFiligree:Hide()
 		end
 
-		local titleLabel = detailsFramework:CreateLabel(contentFrame, Loc["Details! Mythic Run Completed!"], 16, "yellow")
+		local titleLabel = detailsFramework:CreateLabel(contentFrame, "Details! Mythic Run Completed!", 12, "yellow")
 		titleLabel:SetPoint("top", readyFrame, "top", 0, -7)
 		titleLabel:Hide()
 		titleLabel.textcolor = textColor
@@ -1228,7 +1228,7 @@ function mythicDungeonFrames.ShowEndOfMythicPlusPanel()
 		readyFrame.ConfigButton:SetTexture(normalTexture, highlightTexture, pushedTexture, normalTexture)
 
 		--waiting for loot label
-		local waitingForLootLabel = detailsFramework:CreateLabel(contentFrame, Loc["Waiting for loot"], 16, "silver")
+		local waitingForLootLabel = detailsFramework:CreateLabel(contentFrame, "Waiting for loot", 12, "silver")
 		waitingForLootLabel:SetPoint("bottom", readyFrame, "bottom", 0, 54)
 		waitingForLootLabel:Hide()
 
@@ -1261,7 +1261,7 @@ function mythicDungeonFrames.ShowEndOfMythicPlusPanel()
 		end
 
 		---@type df_button
-		readyFrame.ShowBreakdownButton = detailsFramework:CreateButton(contentFrame, showBreakdownFunc, 145, 30, Loc["Show Breakdown"])
+		readyFrame.ShowBreakdownButton = detailsFramework:CreateButton(contentFrame, showBreakdownFunc, 145, 30, "Show Breakdown")
 		PixelUtil.SetPoint(readyFrame.ShowBreakdownButton, "topleft", readyFrame, "topleft", 31, -30)
 		PixelUtil.SetSize(readyFrame.ShowBreakdownButton, 145, 32)
 		--readyFrame.ShowBreakdownButton:SetBackdrop(nil)
@@ -1287,14 +1287,14 @@ function mythicDungeonFrames.ShowEndOfMythicPlusPanel()
 		readyFrame.ShowChartButton.textcolor = textColor
         --detailsFramework:AddRoundedCornersToFrame(readyFrame.ShowChartButton.widget, roundedCornerPreset)
 
-		local elapsedTimeLabel = detailsFramework:CreateLabel(contentFrame, Loc["Run Time:"], textSize, textColor)
+		local elapsedTimeLabel = detailsFramework:CreateLabel(contentFrame, "Run Time:", textSize, textColor)
 		elapsedTimeLabel:SetPoint("topleft", readyFrame, "topleft", 5, -70)
 		local elapsedTimeAmount = detailsFramework:CreateLabel(contentFrame, "00:00", textSize, textColor)
 		elapsedTimeAmount:SetPoint("left", elapsedTimeLabel, "left", 130, 0)
 		elapsedTimeLabel:Hide()
 		elapsedTimeAmount:Hide()
 
-		local timeNotInCombatLabel = detailsFramework:CreateLabel(contentFrame, Loc["Time not in combat:"], textSize, "orangered")
+		local timeNotInCombatLabel = detailsFramework:CreateLabel(contentFrame, "Time not in combat:", textSize, "orangered")
 		timeNotInCombatLabel:SetPoint("topleft", elapsedTimeLabel, "bottomleft", 0, -5)
 		local timeNotInCombatAmount = detailsFramework:CreateLabel(contentFrame, "00:00", textSize, "orangered")
 		timeNotInCombatAmount:SetPoint("left", timeNotInCombatLabel, "left", 130, 0)
@@ -1436,5 +1436,5 @@ function mythicDungeonFrames.ShowEndOfMythicPlusPanel()
 end
 
 Details222.MythicPlus.IsMythicPlus = function()
-	return C_ChallengeMode and C_ChallengeMode.GetActiveKeystoneInfo() and true or false
+	return C_ChallengeMode and C_ChallengeMode.GetActiveKeystoneInfo and C_ChallengeMode.GetActiveKeystoneInfo() and true or false
 end

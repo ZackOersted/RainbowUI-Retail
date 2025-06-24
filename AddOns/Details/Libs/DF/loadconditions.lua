@@ -346,7 +346,7 @@ function detailsFramework:PassLoadFilters(loadTable, encounterID)
 			return false, "M+ Affix"
 		end
 
-		local level, affixes, wasEnergized = C_ChallengeMode.GetActiveKeystoneInfo()
+		local level, affixes, wasEnergized = C_ChallengeMode.GetActiveKeystoneInfo and C_ChallengeMode.GetActiveKeystoneInfo()
 		local hasAffix = false
 		for _, affixID in ipairs(affixes) do
 			if affixID and(loadTable.affix[affixID] or loadTable.affix[affixID .. ""]) then
@@ -603,7 +603,7 @@ function detailsFramework:OpenLoadConditionsPanel(optionsTable, callback, frameO
 							Options = function()
 								GameCooltip2:SetOption("TextFont", "Friz Quadrata TT")
 								GameCooltip2:SetOption("TextColor", "orange")
-								GameCooltip2:SetOption("TextSize", 16)
+								GameCooltip2:SetOption("TextSize", 12)
 								GameCooltip2:SetOption("FixedWidth", 220)
 								GameCooltip2:SetOption("ButtonsYMod", -4)
 								GameCooltip2:SetOption("YSpacingMod", -4)
@@ -707,7 +707,7 @@ function detailsFramework:OpenLoadConditionsPanel(optionsTable, callback, frameO
 							Options = function()
 								GameCooltip2:SetOption("TextFont", "Friz Quadrata TT")
 								GameCooltip2:SetOption("TextColor", "orange")
-								GameCooltip2:SetOption("TextSize", 16)
+								GameCooltip2:SetOption("TextSize", 12)
 								GameCooltip2:SetOption("FixedWidth", 220)
 								GameCooltip2:SetOption("ButtonsYMod", -4)
 								GameCooltip2:SetOption("YSpacingMod", -4)
@@ -782,7 +782,7 @@ function detailsFramework:OpenLoadConditionsPanel(optionsTable, callback, frameO
 			if IS_WOW_PROJECT_MAINLINE then
 				local affixes = {}
 				for i = 2, 1000 do
-					local affixName, desc, texture = C_ChallengeMode.GetAffixInfo(i)
+					local affixName, desc, texture = C_ChallengeMode.GetAffixInfo and C_ChallengeMode.GetAffixInfo(i)
 					if (affixName and not deprecatedAffixes[i]) then
 						table.insert(affixes, {
 							name = affixName,

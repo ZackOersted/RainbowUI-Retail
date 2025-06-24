@@ -752,6 +752,22 @@ function Details:GetDisplay()
 	return self.atributo, self.sub_atributo
 end
 
+function Details:IsShowing(segmentId, displayId, subDisplayId)
+	if (segmentId and segmentId ~= self.segmento) then
+		return false
+	end
+
+	if (displayId and displayId ~= self.atributo) then
+		return false
+	end
+
+	if (subDisplayId and subDisplayId ~= self.sub_atributo) then
+		return false
+	end
+
+	return true
+end
+
 function Details:GetMaxInstancesAmount()
 	return Details.instances_amount
 end
@@ -3028,10 +3044,10 @@ function Details:GetInstanceAttributeText()
 			if (plugin_object) then
 				return plugin_object.__name
 			else
-				return Loc["Unknown Plugin"]
+				return "Unknown Plugin"
 			end
 		else
-			return Loc["Unknown Plugin"]
+			return "Unknown Plugin"
 		end
 
 	elseif (self.modo == modo_alone) then
@@ -3040,7 +3056,7 @@ function Details:GetInstanceAttributeText()
 		if (SoloInfo) then
 			return SoloInfo [1]
 		else
-			return Loc["Unknown Plugin"]
+			return "Unknown Plugin"
 		end
 	end
 end

@@ -21,41 +21,40 @@ local URL = CreateModule("URLHandler", true);
 
 armoryLinks = {
 	{
-		title = "複製名字",
+		title = "Copy Name",
 		url = "{user}",
-    },
-    {
-		title = "官方英雄榜",
-		url = "https://worldofwarcraft.com/zh-tw/character/{realm}/{user}"
-	},
-	{
-		title = "嗨... 英雄榜",
-		url = "https://hi-armory.tw/{realm}/{user}"
-	},
-	{
-		title = "Raider.io",
-		url = "https://raider.io/characters/tw/{realm}/{user}"
-	},
-	{
-		title = "WCL",
-		url = "https://www.warcraftlogs.com/character/tw/{realm}/{user}"
-	},
-	{
-        title = "WCL 經典版",
-        url = "https://vanilla.warcraftlogs.com/character/tw/{realm}/{user}"
-    },
-	{
-        title = "WoW Armory",
-		--https://worldofwarcraft.blizzard.com/en-us/character/us/moon-guard/zincarla
-		url = "https://worldofwarcraft.blizzard.com/{armeu/armus}/character/{eu/us}/{realm-}/{user}"
     },
     {
 		title = "Wowhead Profiler",
 		url = "http://www.wowhead.com/profile={eu/us}.{realm-}.{user}",
     },
+    {
+        title = "WoWProgress",
+        url = "http://www.wowprogress.com/character/{eu/us}/{realm}/{user}"
+    },
+		{
+        title = "Raider io",
+        url = "https://raider.io/characters/{eu/us}/{realm}/{user}"
+    },
+    {
+        title = "Warcraft Logs",
+        url = "https://www.warcraftlogs.com/character/{eu/us}/{realm}/{user}"
+    },
+    {
+        title = "Warcraft Logs Vanilla",
+        url = "https://vanilla.warcraftlogs.com/character/{eu/us}/{realm}/{user}"
+    },
 	{
-			title = "複製角色名稱",
-			url = "{user}"
+        title = "Warcraft Logs Fresh",
+        url = "https://fresh.warcraftlogs.com/character/{eu/us}/{realm}/{user}"
+    },
+    {
+        title = "Warcraft Logs Classic",
+        url = "https://classic.warcraftlogs.com/character/{eu/us}/{realm}/{user}"
+    },
+	{
+		title = "Warcraft Logs Season of Mastery",
+		url = "https://sod.warcraftlogs.com/character/{eu/us}/{realm}/{user}"
 	}
 };
 
