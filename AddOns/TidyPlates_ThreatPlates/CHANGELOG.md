@@ -1,5 +1,5 @@
-# 12.1.0 (2025-03-07)
+# 12.2.3 (2025-06-18)
 
-* Fixed a bug that caused widgets to not update when transparency settings were changed.
-* Improved performance of Healer Tracker widget by limiting combat log parsing for spell detection to battlegrounds and world PvP (during combat only).
-* Added FrameSort support to the Arena widget [PR GH-560].
+* Fixed a bug in the script editor that caused updates to script code to be applied to the wrong custom style.
+* Fixed a bug that prevented some nameplate UI elements from being updated when script code was updated.
+* Updated TOC version for Patch 11.1.7 for WoW Mainline.

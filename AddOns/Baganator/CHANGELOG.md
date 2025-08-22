@@ -1,6 +1,6 @@
 # Baganator
 
-## [688](https://github.com/Baganator/Baganator/tree/688) (2025-05-13)
-[Full Changelog](https://github.com/Baganator/Baganator/compare/687...688) 
+## [699](https://github.com/Baganator/Baganator/tree/699) (2025-06-21)
+[Full Changelog](https://github.com/Baganator/Baganator/compare/698...699) 
 
-- Sorting: Fallback if classID/subClassID are missing due to wrong Blizzard data  
+- Fix scrolling up/down with mouse wheel going too far in bag/bank windows  

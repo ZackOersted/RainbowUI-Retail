@@ -1,6 +1,6 @@
 # Syndicator
 
-## [200](https://github.com/Baganator/Syndicator/tree/200) (2025-05-13)
-[Full Changelog](https://github.com/Baganator/Syndicator/compare/199...200) 
+## [209](https://github.com/Baganator/Syndicator/tree/209) (2025-06-20)
+[Full Changelog](https://github.com/Baganator/Syndicator/compare/208...209) 
 
-- Add type override for "Wand of Making" as Blizzard hasn't fixed the item data  
+- Fix misuse of ATT expansion data (it has decimal values, not just integer)  

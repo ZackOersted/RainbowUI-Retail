@@ -386,10 +386,13 @@ function Addon:SetStyle(unit)
     return "empty"
   end
 
-  if (UnitIsDead(unit.unitid) and UnitIsUnit("softinteract", unit.unitid)) or unit.SoftInteractTargetIsDead then
-    -- We use IsDead to prevent the nameplate switching to healthbar view again shortly before disapearing
-    unit.SoftInteractTargetIsDead = true
-    return (unit.CustomPlateSettings and "NameOnly-Unique") or "NameOnly"
+  -- Hide the nameplate when the unit is dead. Otherwise, the empty healthbar will be shown until the nameplate is
+  -- removed. There will also be a short animation (the nameplate moving down) before it is removed. 
+  -- To avoid this glitch, we just set the nameplate style to empty. 
+  -- We cannot hide the nameplate here (or in UNIT_HEALTH), as this interferes with Hunter's Feign Death ability.
+  -- This results in the nameplate not being shown again if Feign Death ends [GH-583].
+  if UnitIsDead(unit.unitid) then
+    return "empty"
   end
 
   if not style then
